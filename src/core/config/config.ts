@@ -16,7 +16,7 @@ export const config = Object.freeze({
   mail: {
     apiKey: process.env.MAIL_API_KEY as string,
     domain: process.env.MAIL_DOMAIN as string,
-    globalFrom: process.env.MAIL_FROM || ("ecx@gmail.com" as string), //TODO: fix ecx mail.
+    globalFrom: process.env.MAIL_FROM, //TODO: fix ecx mail.
     smtpHost: "smtp.gmail.com",
     smtpPort: 465,
     smtpUsername: process.env.USER_EMAIL,

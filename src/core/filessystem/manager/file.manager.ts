@@ -34,7 +34,6 @@ export class FileManager {
         // name,email ----> This is first row and it is at index 0 after parsing.
         // david,davidtofunmidada@gmail.com
         const isFirstRow  = index === 0;
-        //TODO: add validation to make sure to remove mails record that has empty space
         // should be removed from the data.
         isFirstRow ? acc.columns.push(...data) : acc.information.push(data);
 

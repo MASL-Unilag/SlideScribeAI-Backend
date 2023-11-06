@@ -3,7 +3,7 @@ import config from "./config";
 
 // database connection.
 const initializeDbConnection = async () => {
-  await mongoose.connect(config.db.mongodb.MONGO_URL);
+  return "";
 };
 
 export { initializeDbConnection, mongoose };

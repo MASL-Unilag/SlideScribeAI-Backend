@@ -16,7 +16,7 @@ export class FileManager {
         ? new CSVFileExtractor()
         : new ExcelFileExtractor();
     return this._extractorEngine.extract(
-      file.bufferContents,
+      file.bufferContents!,
     ) as unknown as any[];
   }
 

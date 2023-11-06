@@ -25,14 +25,14 @@ export interface ContextTypes {
 }
 
 export interface RequestFileContents {
-  fileName: string;
-  fieldName: string;
-  bufferContents: Buffer;
-  originalFileName: string;
-  mimetype: string;
-  fileSize: number;
-  path: string;
-  fileStream: Readable;
+  fileName: string | undefined
+  fieldName: string | undefined;
+  bufferContents: Buffer | undefined;
+  originalFileName: string | undefined;
+  mimetype: string | undefined;
+  fileSize: number | undefined;
+  path: string | undefined;
+  fileStream: Readable | undefined;
 }
 
 type ExtractPayloadKeys<T> = {

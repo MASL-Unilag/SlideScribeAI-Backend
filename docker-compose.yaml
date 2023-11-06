@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  scribe_api:
+    container_name: "slide_scribe_ai"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - docker.env
+  
+  scribe_db:
+    container_name: "slide_scribe_db"
+    image: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - docker.env
+
+  scribe_db_visualizer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+  scribe_proxy:
+    container_name: "slide_scribe_ai_proxy"
+    build:
+      context: ./infra
+      dockerfile: Dockerfile
+    ports:
+    - "8080:80"
+    depends_on:
+      - scribe_api
+    volumes:
+      - nginx_data:/var/cache/
+
+networks:
+  default:

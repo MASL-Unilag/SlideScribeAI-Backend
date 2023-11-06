@@ -55,20 +55,6 @@ export interface TokenUser {
   role: string;
 }
 
-export interface NewUserOptions {
-  firstname: string;
-  lastname: string;
-  email: string;
-}
-
-export interface NewMailTemplateOptions {
-  template?: string;
-  description?: string;
-  from?: string;
-  replyTo?: string;
-  dynamicContents?: string[];
-}
-
 export interface CreateNewUserAccountOptions {
   owner: string;
   currency: string;

@@ -12,11 +12,14 @@ export const config = Object.freeze({
       isInDevelopment: process.env.NODE_ENV === ENVIRONMENT.DEV,
       isInTesting: process.env.NODE_ENV === ENVIRONMENT.TEST,
     },
+    encryption: {
+      key: process.env.ENCRYPTION_KEY as string,
+    },
   },
   mail: {
     apiKey: process.env.MAIL_API_KEY as string,
     domain: process.env.MAIL_DOMAIN as string,
-    globalFrom: process.env.MAIL_FROM, //TODO: fix ecx mail.
+    globalFrom: process.env.MAIL_FROM,
     smtpHost: "smtp.gmail.com",
     smtpPort: 465,
     smtpUsername: process.env.USER_EMAIL,

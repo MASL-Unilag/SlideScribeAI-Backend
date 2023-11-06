@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-export class PasswordHandler {
+export class PasswordHelper {
   static hashData = async (data: string) => {
     return await bcrypt.hash(data, 15);
   };

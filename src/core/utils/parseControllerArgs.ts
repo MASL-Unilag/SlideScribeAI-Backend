@@ -2,7 +2,7 @@ import { Request } from "express";
 import { ContextTypes, RequestFileContents } from "../types";
 
 class ParseControllerArgs {
-  parse = (req: Request): ContextTypes => {
+  parse = (req: Request) => {
     return {
       input: req.body,
       params: req.params,

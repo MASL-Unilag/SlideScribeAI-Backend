@@ -6,9 +6,9 @@ import { HttpStatus } from "../utils";
 export class ErrorHandler {
   handle = async (
     error: Error,
-    _: Request,
+    req: Request,
     res: Response,
-    __: NextFunction,
+    _: NextFunction,
   ) => {
     let statusCode: number = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = "internal server error";
@@ -20,6 +20,12 @@ export class ErrorHandler {
     }
 
     if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR) logger.error(error);
-    res.status(statusCode).send({ status: false, error: message });
+    res.status(statusCode).send({
+      status: false,
+      error: message,
+      endpoint: req.url.trim(),
+      method: req.method,
+      timestamp: new Date().toDateString(),
+    });
   };
 }

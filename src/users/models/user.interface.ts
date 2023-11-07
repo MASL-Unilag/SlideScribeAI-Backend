@@ -7,4 +7,5 @@ export interface IUsers extends IModel {
   email: string;
   password: string;
   isDeleted: boolean;
+  refreshToken: string;
 }

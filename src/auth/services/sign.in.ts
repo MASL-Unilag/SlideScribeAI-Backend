@@ -16,7 +16,7 @@ export class SignIn {
   ) {}
 
   handle = async ({ input }: Context<SignInPayload>) => {
-    const user = await this.usersRepo.findOne<IUsers>({ email: input.email });
+    const user = await this.usersRepo.findOne({ email: input.email });
     if (!user)
       throw new UnAuthorizedError(AppMessages.FAILURE.INVALID_CREDENTIALS);
 
@@ -32,11 +32,16 @@ export class SignIn {
       email: user.email,
     });
 
+    await this.usersRepo.updateOne(
+      { user_id: user.user_id },
+      { $set: { refreshToken } },
+    );
+
     return {
       code: HttpStatus.OK,
       message: AppMessages.SUCCESS.LOGIN,
       data: {
-        user,
+        user: user.toJSON(),
         tokens: {
           accessToken,
           refreshToken,

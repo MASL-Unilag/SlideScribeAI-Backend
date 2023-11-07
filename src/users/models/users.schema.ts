@@ -29,6 +29,9 @@ export const userSchema = new Schema<IUsers>(
       type: String,
       required: true,
     },
+    refreshToken: {
+      type: String,
+    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -42,6 +45,8 @@ export const userSchema = new Schema<IUsers>(
         ret.user_id = ret._id;
         delete ret.__v;
         delete ret._id;
+        delete ret.password;
+        delete ret.refreshToken;
       },
     },
   },

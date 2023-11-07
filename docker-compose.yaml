@@ -10,7 +10,7 @@ services:
       - "4000:4000"
     env_file:
       - docker.env
-  
+
   scribe_db:
     container_name: "slide_scribe_db"
     image: postgres
@@ -31,7 +31,7 @@ services:
       context: ./infra
       dockerfile: Dockerfile
     ports:
-    - "8080:80"
+      - "8080:80"
     depends_on:
       - scribe_api
     volumes:

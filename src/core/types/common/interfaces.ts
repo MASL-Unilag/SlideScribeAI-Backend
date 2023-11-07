@@ -25,7 +25,7 @@ export interface ContextTypes {
 }
 
 export interface RequestFileContents {
-  fileName: string | undefined
+  fileName: string | undefined;
   fieldName: string | undefined;
   bufferContents: Buffer | undefined;
   originalFileName: string | undefined;
@@ -53,20 +53,6 @@ export interface ValidationSchema {
 export interface TokenUser {
   id: string;
   role: string;
-}
-
-export interface NewUserOptions {
-  firstname: string;
-  lastname: string;
-  email: string;
-}
-
-export interface NewMailTemplateOptions {
-  template?: string;
-  description?: string;
-  from?: string;
-  replyTo?: string;
-  dynamicContents?: string[];
 }
 
 export interface CreateNewUserAccountOptions {

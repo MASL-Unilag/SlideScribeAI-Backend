@@ -4,9 +4,7 @@ import * as formData from "form-data";
 import { logger } from "../logging";
 
 export class Mail {
-  public static send = async (options: IEMAIL) => {
-    
-  };
+  public static send = async (options: IEMAIL) => {};
 }
 
 export default new Mail();

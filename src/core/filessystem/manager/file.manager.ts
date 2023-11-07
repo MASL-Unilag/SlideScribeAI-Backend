@@ -27,13 +27,12 @@ export class FileManager {
         data: any,
         index: number,
       ) => {
-
-        // first row in a csv or excel file contains the 
-        // column names for each record for example 
+        // first row in a csv or excel file contains the
+        // column names for each record for example
         // in a CSV containing the names and emails of students
         // name,email ----> This is first row and it is at index 0 after parsing.
         // david,davidtofunmidada@gmail.com
-        const isFirstRow  = index === 0;
+        const isFirstRow = index === 0;
         // should be removed from the data.
         isFirstRow ? acc.columns.push(...data) : acc.information.push(data);
 

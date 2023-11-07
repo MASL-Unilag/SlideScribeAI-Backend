@@ -47,4 +47,4 @@ export class Encryptor implements IEncryptor {
   }
 }
 
-export const AppEncryptor  = new Encryptor();
+export const AppEncryptor = new Encryptor();

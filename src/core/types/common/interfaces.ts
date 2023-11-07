@@ -25,7 +25,7 @@ export interface ContextTypes {
 }
 
 export interface RequestFileContents {
-  fileName: string | undefined
+  fileName: string | undefined;
   fieldName: string | undefined;
   bufferContents: Buffer | undefined;
   originalFileName: string | undefined;

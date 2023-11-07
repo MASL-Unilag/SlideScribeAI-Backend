@@ -10,40 +10,39 @@ export const userSchema = new Schema<IUsers>(
       index: true,
     },
     firstname: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     lastname: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: true,
+      trim: true,
     },
     email: {
-        type: String,
-        unique: true,
-        trim: true,
-        index: true
+      type: String,
+      unique: true,
+      trim: true,
+      index: true,
     },
     password: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     isDeleted: {
-        type: Boolean,
-        default: false,
-    }
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
     virtuals: true,
     toJSON: {
-        transform(doc, ret, options) {
-            ret.user_id = ret._id;
-            delete ret.__v;
-            delete ret._id;
-        },
-    }
+      transform(doc, ret, options) {
+        ret.user_id = ret._id;
+        delete ret.__v;
+        delete ret._id;
+      },
+    },
   },
 );
-

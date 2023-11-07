@@ -5,7 +5,7 @@ import {
   UnAuthorizedError,
 } from "../../core";
 import { SignInPayload } from "../types";
-import { Users } from "../../users";
+import { IUsers, Users } from "../../users";
 import { AppMessages } from "../../common";
 import { TokenService } from "../helpers";
 
@@ -16,7 +16,7 @@ export class SignIn {
   ) {}
 
   handle = async ({ input }: Context<SignInPayload>) => {
-    const user = await this.usersRepo.findOne({ email: input.email });
+    const user = await this.usersRepo.findOne<IUsers>({ email: input.email });
     if (!user)
       throw new UnAuthorizedError(AppMessages.FAILURE.INVALID_CREDENTIALS);
 

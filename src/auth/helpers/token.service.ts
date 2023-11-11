@@ -2,6 +2,7 @@ import { Encryptor } from "../../app";
 import { config } from "../../core";
 import { IJwtData } from "../types";
 
+import crypto from "node:crypto";
 import * as jwt from "jsonwebtoken";
 
 export class TokenService {
@@ -15,20 +16,37 @@ export class TokenService {
   }
 
   private _generateAccessToken(data: IJwtData): string {
-    const accessToken = jwt.sign(data, config.auth.accessTokenSecret, {
+    const accessToken = this._generateToken({
+      data,
+      secret: config.auth.accessTokenSecret,
       expiresIn: config.auth.accessTokenExpiresIn,
-      jwtid: crypto.randomUUID(),
     });
 
     return this.encryptionService.encrypt(accessToken);
   }
 
   private _generateRefreshToken(data: IJwtData): string {
-    const refreshToken = jwt.sign(data, config.auth.refreshTokenSecret, {
+    const refreshToken = this._generateToken({
+      data,
+      secret: config.auth.refreshTokenSecret,
       expiresIn: config.auth.refreshTokenExpiresIn,
-      jwtid: crypto.randomUUID(),
     });
 
     return this.encryptionService.encrypt(refreshToken);
+  }
+
+  private _generateToken({
+    data,
+    secret,
+    expiresIn,
+  }: {
+    data: IJwtData;
+    expiresIn: string;
+    secret: string;
+  }): string {
+    return jwt.sign(data, secret, {
+      expiresIn: expiresIn,
+      jwtid: crypto.randomUUID(),
+    });
   }
 }

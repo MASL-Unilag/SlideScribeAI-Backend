@@ -1,12 +1,13 @@
 import { Response, Request, NextFunction } from "express";
 
-import { HttpStatus, joiValidate, parseControllerArgs } from "../utils";
+import { HttpStatus, joiValidate, parseContextArgs } from "../utils";
 import {
   AnyFunction,
   ExpressCallbackFunction,
   ValidationSchema,
 } from "../types";
 import { UnProcessableError } from "../errors";
+import { logger } from "../logging";
 
 export class ControlHandler {
   handle = (
@@ -14,8 +15,8 @@ export class ControlHandler {
     schema: ValidationSchema | undefined = {},
   ): ExpressCallbackFunction => {
     return async (req: Request, res: Response, next: NextFunction) => {
-      const controllerArgs = parseControllerArgs.parse(req);
-      const { input, params, query } = controllerArgs;
+      const contextArgs = parseContextArgs.parse(req);
+      const { input, params, query } = contextArgs;
 
       try {
         if (schema) {
@@ -30,7 +31,7 @@ export class ControlHandler {
           }
         }
 
-        const controllerResult = await controllerFn(controllerArgs);
+        const controllerResult = await controllerFn(contextArgs);
         if (!controllerResult) {
           res.status(HttpStatus.OK).send({ status: true });
           return;
@@ -39,7 +40,7 @@ export class ControlHandler {
         const { code, ...data } = controllerResult;
         res.status(code ?? HttpStatus.OK).send(data);
       } catch (error) {
-        console.error(error);
+        logger.error(error);
         next(error);
       }
     };

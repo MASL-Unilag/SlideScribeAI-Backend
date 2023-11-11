@@ -5,7 +5,7 @@ export * from "./credentials";
 export * from "./gracefullyShutdown";
 export { default as HttpStatus } from "./statusCodes";
 export * from "./zod";
-export { default as parseControllerArgs } from "./parseControllerArgs";
+export { default as parseContextArgs } from "./parseControllerArgs";
 export * from "./misc";
 export * from "./http";
 export * from "./environment";

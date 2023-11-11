@@ -11,10 +11,16 @@ import { TokenService } from "../helpers";
 
 export class SignIn {
   constructor(
-    public readonly usersRepo: typeof Users,
-    public readonly tokenService: TokenService,
+    private readonly usersRepo: typeof Users,
+    private readonly tokenService: TokenService,
   ) {}
 
+  /**
+   * @description Authenticates users and generates token for them
+   * @throws {UnAuthorizedError} error
+   * @param {Context<SignInPayload>} params
+   * @returns 
+   */
   handle = async ({ input }: Context<SignInPayload>) => {
     const user = await this.usersRepo.findOne({ email: input.email });
     if (!user)

@@ -7,4 +7,4 @@ export const authRouter = Router();
 
 authRouter
   .use(authRateLimiter)
-  .use("/sign", controlHandler.handle(signIn.handle, signInSchema));
+  .use("/sign-in", controlHandler.handle(signIn.handle, signInSchema));

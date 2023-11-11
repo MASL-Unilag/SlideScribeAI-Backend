@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { ContextTypes, RequestFileContents } from "../types";
 
-class ParseControllerArgs {
+class ParseContextArgs {
   parse = (req: Request) => {
     return {
       input: req.body,
@@ -9,7 +9,7 @@ class ParseControllerArgs {
       query: req.query,
       headers: req.headers,
       user: req.user,
-      file: ParseControllerArgs.parseFileContents(req),
+      file: ParseContextArgs.parseFileContents(req),
     };
   };
 
@@ -28,4 +28,4 @@ class ParseControllerArgs {
   };
 }
 
-export default new ParseControllerArgs();
+export default new ParseContextArgs();

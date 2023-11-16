@@ -5,7 +5,7 @@ export class NotFoundErrorHandler {
   handle = (req: Request, _: Response, next: NextFunction) => {
     next(
       new RouteNotFoundError(
-        `request path "${req.path.trim()}" not found for ${req.method} method.`,
+        `request path '${req.path.replace("\\", '')}' not found for ${req.method} method.`,
       ),
     );
   };

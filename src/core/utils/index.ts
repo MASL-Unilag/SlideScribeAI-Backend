@@ -1,4 +1,3 @@
-export * from "./jwt";
 export * from "./hasher";
 export * from "./misc";
 export * from "./credentials";

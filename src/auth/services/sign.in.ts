@@ -5,13 +5,13 @@ import {
   UnAuthorizedError,
 } from "../../core";
 import { SignInPayload } from "../types";
-import { IUsers, Users } from "../../users";
+import { UserRepository } from "../../users";
 import { AppMessages } from "../../common";
 import { TokenService } from "../helpers";
 
 export class SignIn {
   constructor(
-    private readonly usersRepo: typeof Users,
+    private readonly usersRepo: UserRepository,
     private readonly tokenService: TokenService,
   ) {}
 
@@ -19,7 +19,7 @@ export class SignIn {
    * @description Authenticates users and generates token for them
    * @throws {UnAuthorizedError} error
    * @param {Context<SignInPayload>} params
-   * @returns 
+   * @returns
    */
   handle = async ({ input }: Context<SignInPayload>) => {
     const user = await this.usersRepo.findOne({ email: input.email });

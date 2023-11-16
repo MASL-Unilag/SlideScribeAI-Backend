@@ -4,6 +4,9 @@ export const AppMessages = {
   },
   SUCCESS: {
     LOGIN: "Login successful.",
+    LOGOUT: "Logged out successfully.",
   },
-  INFO: {},
+  INFO: {
+    INVALID_OPERATION: "Invalid operation.",
+  },
 };

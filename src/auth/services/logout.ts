@@ -23,14 +23,12 @@ export class Logout {
     const tokenHeader = headers.authorization!;
     if (!tokenHeader) return;
 
-    // then blacklist the token to prevent
-    // another user using it to perform 
-    // authenticated actions.
     await this.tokenService
       .extractTokenDetails(tokenHeader, config.auth.refreshTokenSecret)
       .then(this._blackListToken);
 
     // remove the refresh token from the user records.
+    // considering if we implement refresh token feature later.
     this._destroySession(user.id);
 
     return {

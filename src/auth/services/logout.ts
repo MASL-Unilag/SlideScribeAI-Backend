@@ -1,6 +1,5 @@
-import { JwtPayload } from "jsonwebtoken";
-import { Context, HttpStatus, UnAuthorizedError, config } from "../../core";
-import { UserRepository, Users } from "../../users";
+import { Context, HttpStatus, config } from "../../core";
+import { UserRepository } from "../../users";
 import { BlackListRepository } from "../model";
 import { LogoutPayload } from "../types";
 import { TokenService } from "../helpers";

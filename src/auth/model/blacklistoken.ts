@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
+import { IModel } from "../../common";
 
-export interface IBlacklistToken {
+export interface IBlacklistToken extends IModel {
   token: string;
   expiry: Date;
 }
@@ -20,5 +21,5 @@ export const blacklistTokenSchema = new Schema<IBlacklistToken>(
 );
 
 
-export const BlackListToken = model('blacklistokens', blacklistTokenSchema);
-export type BlackListRepository = typeof BlackListToken;
+export const BlackListTokens = model("blacklistokens", blacklistTokenSchema);
+export type BlackListRepository = typeof BlackListTokens;

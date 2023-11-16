@@ -24,7 +24,7 @@ if (
   app.use(morgan("dev"));
 }
 
-app.use(express.json());
+export const exp = app.use(express.json());
 app.use(parser.urlencoded({ extended: false }));
 app.use(helmet());
 app.disable("x-powered-by");

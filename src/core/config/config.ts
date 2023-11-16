@@ -29,9 +29,9 @@ export const config = Object.freeze({
   },
   auth: {
     accessTokenSecret: process.env.ACCESS_TOKEN_SECRET as string,
-    accessTokenExpiresIn: process.env.ACCESS_TOKEN_SECRET_LIFE_SPAN as string,
+    accessTokenExpiresIn: process.env.ACCESS_TOKEN_SECRET_LIFESPAN as string,
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET as string,
-    refreshTokenExpiresIn: process.env.ACCESS_TOKEN_SECRET_LIFE_SPAN as string,
+    refreshTokenExpiresIn: process.env.REFRESH_TOKEN_SECRET_LIFESPAN as string,
   },
   cache: {
     port: parseInt(process.env.REDIS_PORT!),

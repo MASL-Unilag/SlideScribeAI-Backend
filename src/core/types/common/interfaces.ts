@@ -2,6 +2,7 @@ import { IncomingHttpHeaders } from "http";
 import "express";
 import { Schema } from "joi";
 import { Readable } from "node:stream";
+import { IJwtData } from "../../../auth/types";
 
 interface IParams {
   [key: string]: any;
@@ -19,7 +20,7 @@ export interface ContextTypes {
   params: IParams;
   query: IQuery;
   input: IInput;
-  user?: TokenUser | undefined | null;
+  user?: IJwtData | undefined | null;
   file: RequestFileContents;
   headers: IncomingHttpHeaders;
 }
@@ -48,17 +49,6 @@ export interface ValidationSchema {
   paramsSchema?: Schema;
   querySchema?: Schema;
   fileSchema?: Schema;
-}
-
-export interface TokenUser {
-  id: string;
-  role: string;
-}
-
-export interface CreateNewUserAccountOptions {
-  owner: string;
-  currency: string;
-  phoneNumber: string;
 }
 
 export interface IEMAIL {

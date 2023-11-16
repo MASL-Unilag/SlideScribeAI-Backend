@@ -1,4 +1,4 @@
-import { Context, HttpStatus, config } from "../../core";
+import { Context, ForbiddenError, HttpStatus, config } from "../../core";
 import { UserRepository } from "../../users";
 import { BlackListRepository } from "../model";
 import { LogoutPayload } from "../types";
@@ -17,10 +17,11 @@ export class Logout {
    * @param {Context<LogoutPayload>} payload
    * @returns { code: string, message: string } response
    */
-  async handle({ user, headers }: Context<LogoutPayload>) {
+  public handle = async ({ user, headers }: Context<LogoutPayload>) => {
     // get the auth token
     const tokenHeader = headers.authorization!;
-    if (!tokenHeader) return;
+    if (!tokenHeader)
+      throw new ForbiddenError(AppMessages.INFO.EMPTY_TOKEN_HEADER);
 
     await this.tokenService
       .extractTokenDetails(tokenHeader, config.auth.refreshTokenSecret)
@@ -31,26 +32,26 @@ export class Logout {
     this._destroySession(user.id);
 
     return {
-      code: HttpStatus.OK,
+      code: HttpStatus.NO_CONTENT,
       message: AppMessages.SUCCESS.LOGOUT,
     };
-  }
+  };
 
-  private async _blackListToken({
+  private _blackListToken = async ({
     token,
     expiration,
   }: {
     token: string;
     expiration: Date;
-  }): Promise<void> {
+  }): Promise<void> => {
     await this.blackListRepository.create({
       token,
       expiryDate: expiration,
     });
     //TODO: can add cron job later to remove stale tokens.
-  }
+  };
 
-  private async _destroySession(userId: string): Promise<void> {
+  private _destroySession = async (userId: string): Promise<void> => {
     await this.userRepository.updateOne(
       {
         user_id: userId,
@@ -61,5 +62,5 @@ export class Logout {
         },
       },
     );
-  }
+  };
 }

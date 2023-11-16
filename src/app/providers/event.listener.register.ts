@@ -1,4 +1,5 @@
 import { logger, config } from "../../core";
+import { Users } from "../../users";
 
 /**
  * Event Listener Registry.

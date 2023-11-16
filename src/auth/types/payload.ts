@@ -1,4 +1,5 @@
-import { ContextTypes, TokenUser } from "../../core";
+import { ContextTypes } from "../../core";
+import { IJwtData } from "./interfaces";
 
 export interface SignInPayload extends ContextTypes {
   input: {
@@ -18,5 +19,5 @@ export interface SignUpPayload extends ContextTypes {
 }
 
 export interface LogoutPayload extends ContextTypes {
-  user: TokenUser;
+  user: IJwtData;
 }

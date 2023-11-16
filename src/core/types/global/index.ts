@@ -1,9 +1,8 @@
-import { TokenUser } from "../common";
-
+import { IJwtData } from "../../../auth/types";
 declare global {
   namespace Express {
     export interface Request {
-      user: TokenUser | null | undefined;
+      user: IJwtData | null | undefined;
     }
   }
 }

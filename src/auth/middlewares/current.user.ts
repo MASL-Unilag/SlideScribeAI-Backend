@@ -1,15 +1,16 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 
-import {
-  verifyToken,
-  config,
-  ForbiddenError,
-  TokenUser,
-  UnAuthorizedError,
-} from "../../core";
+import { config, ForbiddenError, UnAuthorizedError } from "../../core";
+import { TokenService } from "../helpers";
+import { Encryptor } from "../../app";
+import { IJwtData } from "../types";
 
 export class CurrentUser {
-  handle = (req: Request, res: Response, next: NextFunction) => {
+  constructor(
+    private readonly tokenService: TokenService,
+    private readonly encryptor: Encryptor,
+  ) {}
+  handle = (req: Request, _: Response, next: NextFunction) => {
     const tokenHeader = req.get("Authorization") || req.get("x-Auth-Token");
 
     let tokenDetails;
@@ -19,7 +20,12 @@ export class CurrentUser {
       }
       const token = tokenHeader.split(" ").pop() as string;
 
-      tokenDetails = verifyToken(token, config.auth.accessTokenSecret);
+      const decryptedToken = this.encryptor.decrypt(token);
+
+      tokenDetails = this.tokenService.verifyToken(
+        decryptedToken,
+        config.auth.accessTokenSecret,
+      );
     } catch (err: any) {
       req.user = null;
       const error = new ForbiddenError(err.message);
@@ -27,7 +33,11 @@ export class CurrentUser {
       return;
     }
 
-    const user: TokenUser = tokenDetails.user;
+    const payload = {
+      email: tokenDetails.email,
+      id: tokenDetails.id,
+    };
+    const user: IJwtData = payload;
     req.user = user;
     next();
   };

@@ -1,3 +1,5 @@
+import * as crypto from "node:crypto";
+
 import { Schema } from "mongoose";
 import { IUsers } from "./user.interface";
 
@@ -7,6 +9,7 @@ export const userSchema = new Schema<IUsers>(
       type: String,
       required: true,
       unique: true,
+      default: () => crypto.randomUUID(),
       index: true,
     },
     firstname: {

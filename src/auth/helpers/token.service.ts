@@ -1,9 +1,10 @@
-import { Encryptor } from "../../app";
-import { UnAuthorizedError, config } from "../../core";
-import { IJwtData } from "../types";
+import * as crypto from "node:crypto";
 
-import crypto from "node:crypto";
 import * as jwt from "jsonwebtoken";
+
+import { Encryptor } from "../../app";
+import { UnAuthorizedError, config, logger } from "../../core";
+import { IJwtData } from "../types";
 import { AppMessages } from "../../common";
 
 export class TokenService {
@@ -20,26 +21,39 @@ export class TokenService {
     // get the token from the bearer string.
     const token = tokenFromHeader.split(" ").pop()!;
 
+    const decryptedToken = this.encryptionService.decrypt(token);
+
     // verify the token
-    const tokenDetails = await this.verifyToken(
-      token,
-      secret,
-    );
-    if (!tokenDetails)
-      throw new UnAuthorizedError(AppMessages.INFO.INVALID_OPERATION);
+    const tokenDetails = await this.verifyToken(decryptedToken, secret);
 
     // extract the token information
     let tokenPayload = tokenDetails as jwt.JwtPayload;
     let timeToExpiry = tokenPayload.exp as number;
 
     return {
+      user: {
+        id: tokenDetails.id,
+        email: tokenDetails.email,
+      },
       token,
       expiration: new Date(timeToExpiry * 1000),
     };
   }
 
-  async verifyToken(token: string, secret: string): Promise<jwt.JwtPayload> {
-    return jwt.verify(token, secret) as jwt.JwtPayload;
+  /**
+   * @description Verifies the token provided.
+   * @param {string} token
+   * @param {string} secret
+   * @returns {string} decoded token
+   * @throws {UnAuthorizedError} error
+   */
+  verifyToken(token: string, secret: string): jwt.JwtPayload {
+    try {
+      return jwt.decode(token) as jwt.JwtPayload;
+    } catch (err) {
+      logger.error(err);
+      throw new UnAuthorizedError(AppMessages.FAILURE.INVALID_TOKEN_PROVIDED);
+    }
   }
 
   private _generateAccessToken(data: IJwtData): string {
@@ -72,7 +86,7 @@ export class TokenService {
     secret: string;
   }): string {
     return jwt.sign(data, secret, {
-      expiresIn: expiresIn,
+      expiresIn,
       jwtid: crypto.randomUUID(),
     });
   }

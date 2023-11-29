@@ -9,4 +9,4 @@ const tokenService = new TokenService(AppEncryptor);
 
 export const currentUser = new CurrentUser();
 export const signIn = new SignIn(Users, tokenService);
-export const signUp = new SignUp()
+export const signUp = new SignUp(Users)

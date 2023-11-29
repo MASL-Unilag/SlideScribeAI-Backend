@@ -29,7 +29,7 @@ export class ControlHandler {
             throw new UnProcessableError(error.message.replaceAll('"', ""));
           }
         }
-
+        
         const controllerResult = await controllerFn(controllerArgs);
         if (!controllerResult) {
           res.status(HttpStatus.OK).send({ status: true });

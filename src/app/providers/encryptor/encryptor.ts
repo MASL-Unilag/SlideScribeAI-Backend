@@ -46,5 +46,3 @@ export class Encryptor implements IEncryptor {
     return `${this._iv.toString("hex")}:${encryptedText.toString("hex")}`;
   }
 }
-
-export const AppEncryptor = new Encryptor();

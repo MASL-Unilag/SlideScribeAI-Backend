@@ -1,7 +1,6 @@
 import { Users } from "../users";
 import { CurrentUser } from "./middlewares/current.user";
 import { TokenService } from "./helpers";
-import { AppEncryptor } from "../app";
 import { SignIn } from "./services/sign.in";
 import { SignUp } from "./services/sign.up";
 import { Logout } from "./services/logout";

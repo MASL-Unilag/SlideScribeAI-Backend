@@ -6,29 +6,43 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    hostname: "slidescribe"
     ports:
       - "4000:4000"
     env_file:
-      - docker.env
+      - /docker.env
+    depends_on:
+      - scribe_db
+    healthcheck:
+      test: "echo 'db.runCommand('ping').ok' | mongosh localhost:27018/test --quiet"
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
 
   scribe_db:
-    container_name: "slide_scribe_db"
-    image: postgres
-    ports:
-      - "5432:5432"
+    container_name: scribe_db
+    image: mongo:latest
     env_file:
-      - docker.env
-
-  scribe_db_visualizer:
-    image: adminer
-    restart: always
+      - /docker.env      
     ports:
-      - "8080:8080"
+      - "27018:27017"
+    volumes:
+    - mongodb_data:/data/db
+    
+  scribe_db_visualizer:
+    image: mongo-express
+    ports:
+      - "27019:8081"
+    depends_on:
+      - scribe_db
+    env_file:
+     - /docker.env
 
   scribe_proxy:
     container_name: "slide_scribe_ai_proxy"
     build:
-      context: ./infra
+      context: ./deployment/infra
       dockerfile: Dockerfile
     ports:
       - "8080:80"
@@ -37,5 +51,6 @@ services:
     volumes:
       - nginx_data:/var/cache/
 
-networks:
-  default:
+volumes:
+  nginx_data:
+  mongodb_data:

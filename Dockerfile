@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 4000/tcp
 
-CMD [ "npm","run", "start:prod" ]
+CMD [ "npm","run", "start:dev" ]

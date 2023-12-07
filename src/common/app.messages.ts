@@ -6,7 +6,12 @@ export const AppMessages = {
   },
   SUCCESS: {
     LOGIN: "Login successful.",
+    LOGOUT: "Logged out successfully.",
     SIGNUP: "Signup successful",
+    INVALID_TOKEN_PROVIDED: "Invalid token provided.",
   },
-  INFO: {},
+  INFO: {
+    INVALID_OPERATION: "Invalid operation.",
+    EMPTY_TOKEN_HEADER: "Invalid authorization header",
+  },
 };

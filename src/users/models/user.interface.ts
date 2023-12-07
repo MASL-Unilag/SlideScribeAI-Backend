@@ -9,3 +9,5 @@ export interface IUsers extends IModel {
   isDeleted: boolean;
   refreshToken: string;
 }
+
+

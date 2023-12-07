@@ -9,6 +9,6 @@ authRouter.use(express.json());
 
 authRouter
   .use(authRateLimiter)
-  .post("/signup", controlHandler.handle(signUp.handle, signUpSchema))
+  .post("/sign-up", controlHandler.handle(signUp.handle, signUpSchema))
   .post("/sign-in", controlHandler.handle(signIn.handle, signInSchema))
   .post("/sign-out", currentUser.handle, controlHandler.handle(signOut.handle));

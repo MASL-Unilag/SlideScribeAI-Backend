@@ -6,10 +6,8 @@ import * as parser from "body-parser";
 import * as compression from "compression";
 
 import {
-  corsOptions,
   notFoundHandler,
   errorHandler,
-  globalRateLimiter,
   config,
 } from "../core";
 import { appRouter } from "./app.router";
@@ -28,7 +26,6 @@ app.use(parser.urlencoded({ extended: false }));
 app.use(helmet());
 app.disable("x-powered-by");
 app.use(compression());
-app.use(globalRateLimiter);
 app.use(cors());
 app.use("/v1", appRouter);
 app.use(notFoundHandler.handle);

@@ -49,6 +49,11 @@ export const config = Object.freeze({
       POSTGRESQL_PORT: parseInt(process.env.POSTGRESQL_PORT!),
     },
   },
+  services: {
+      openaikey: {
+        OPENAI_API_KEY: process.env.OPENAI_API_KEY as string
+      }
+  },
   rateLimit: {
     limit: process.env.WINDOW_RATE_LIMIT,
   },

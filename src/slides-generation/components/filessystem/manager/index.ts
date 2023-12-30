@@ -1,1 +1,1 @@
-export * from "./extractor.manager";
+export * from "./file.manager";

@@ -12,4 +12,8 @@ const HttpStatus = {
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
-export default HttpStatus;
+const HttpHeadersContentType = {
+  OCTECT_STREAM: "application/octet-stream",
+} as const;
+
+export { HttpStatus, HttpHeadersContentType };

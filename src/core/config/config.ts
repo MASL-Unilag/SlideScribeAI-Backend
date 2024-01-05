@@ -52,6 +52,12 @@ export const config = Object.freeze({
   rateLimit: {
     limit: process.env.WINDOW_RATE_LIMIT,
   },
+  openai: {
+    key: process.env.OPENAI_KEY as string,
+    baseUrl: process.env.OPENAI_BASE_URL as string,
+    textDeploymentName: process.env.OPENAI_TEXT_DEPLOYMENT_NAME as string,
+    imageDeploymentName: process.env.OPENAI_IMAGE_DEPLOYMENT_NAME as string,
+  },
 });
 
 export default config;

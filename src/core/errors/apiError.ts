@@ -3,7 +3,7 @@ export type ErrorDetailsDescriptor = Array<{
   path: String;
 }> | null;
 
-export abstract class ApiError extends Error {
+export abstract class ApplicationError extends Error {
   abstract _statusCode: number;
   abstract _message: string;
   abstract _details: ErrorDetailsDescriptor;
@@ -12,7 +12,7 @@ export abstract class ApiError extends Error {
     super(message);
     this.name = this.constructor.name;
 
-    Object.setPrototypeOf(this, ApiError.prototype);
+    Object.setPrototypeOf(this, ApplicationError.prototype);
   }
 
   abstract get statusCode(): number;

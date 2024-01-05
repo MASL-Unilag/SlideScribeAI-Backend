@@ -1,8 +1,8 @@
 import { HttpStatus } from "../utils";
 import { ApplicationError, ErrorDetailsDescriptor } from "./apiError";
 
-export class ConflictError extends ApplicationError {
-  _statusCode = HttpStatus.CONFLICT;
+export class InvalidFileMimeType extends ApplicationError {
+  _statusCode = HttpStatus.FORBIDDEN;
   _message: string;
   _details = null;
 
@@ -10,7 +10,7 @@ export class ConflictError extends ApplicationError {
     super(message);
     this._message = message;
 
-    Object.setPrototypeOf(this, ConflictError.prototype);
+    Object.setPrototypeOf(this, InvalidFileMimeType.prototype);
   }
 
   get statusCode(): number {

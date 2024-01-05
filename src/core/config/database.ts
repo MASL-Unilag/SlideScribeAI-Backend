@@ -9,6 +9,7 @@ const initializeDbConnection = async () => {
   })
   .catch((error) => {
     console.log("error occured")
+    throw new Error(error)
   }); 
 };
 

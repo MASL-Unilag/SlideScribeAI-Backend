@@ -1,7 +1,7 @@
 import { HttpStatus } from "../utils";
-import { ApiError, ErrorDetailsDescriptor } from "./apiError";
+import { ApplicationError, ErrorDetailsDescriptor } from "./apiError";
 
-export class UnProcessableError extends ApiError {
+export class UnProcessableError extends ApplicationError {
   override _details: ErrorDetailsDescriptor = null;
   _statusCode = HttpStatus.UNPROCESSABLE;
   _message: string;

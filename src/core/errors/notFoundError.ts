@@ -1,7 +1,7 @@
 import { HttpStatus } from "../utils";
-import { ApiError, ErrorDetailsDescriptor } from "./apiError";
+import { ApplicationError, ErrorDetailsDescriptor } from "./apiError";
 
-export class RouteNotFoundError extends ApiError {
+export class RouteNotFoundError extends ApplicationError {
   _statusCode = HttpStatus.NOT_FOUND;
   _message: string;
   _details = null;

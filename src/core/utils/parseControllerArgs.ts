@@ -13,10 +13,9 @@ class ParseContextArgs {
     };
   };
 
-  //TODO: tidy this up later.
   private static parseFileContents = (req: Request): RequestFileContents => {
     return {
-      fileName: req?.file?.filename,
+      fileName: req?.file?.originalname,
       fieldName: req?.file?.fieldname,
       bufferContents: req?.file?.buffer,
       originalFileName: req?.file?.originalname,
@@ -24,6 +23,7 @@ class ParseContextArgs {
       fileSize: req?.file?.size,
       path: req?.file?.path,
       fileStream: req?.file?.stream!,
+      
     };
   };
 }

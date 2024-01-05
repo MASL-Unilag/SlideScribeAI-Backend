@@ -1,11 +1,22 @@
-import { Context, FileManager } from "../../core";
+import { HandlerReturnType, Context, HttpStatus } from "../../core";
+import { FileManager } from "../components";
 import { FileUploadPayload } from "../types";
 
 export class GenerateSlides {
-  constructor() {}
+  generate = async ({
+    file,
+    input,
+  }: Context<FileUploadPayload>): Promise<HandlerReturnType> => {
+    const fileManager = new FileManager(file);
 
-  extract = async ({ file }: Context<FileUploadPayload>) => {
-    const fileManager = new FileManager();
-    const fileContents = await fileManager.extractFileContents([file]);
+    const slideContents = await fileManager.generateSlideContents({
+      options: input,
+    });
+
+    return {
+      code: HttpStatus.OK,
+      message: "Generated content.",
+      body: slideContents,
+    };
   };
 }

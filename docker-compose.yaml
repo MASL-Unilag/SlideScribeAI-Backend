@@ -39,18 +39,6 @@ services:
     env_file:
      - /docker.env
 
-  scribe_proxy:
-    container_name: "slide_scribe_ai_proxy"
-    build:
-      context: ./deployment/infra
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80"
-    depends_on:
-      - scribe_api
-    volumes:
-      - nginx_data:/var/cache/
-
 volumes:
   nginx_data:
   mongodb_data:

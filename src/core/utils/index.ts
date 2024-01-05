@@ -2,7 +2,7 @@ export * from "./hasher";
 export * from "./misc";
 export * from "./credentials";
 export * from "./gracefullyShutdown";
-export { default as HttpStatus } from "./statusCodes";
+export * from "./statusCodes";
 export * from "./zod";
 export { default as parseContextArgs } from "./parseControllerArgs";
 export * from "./misc";

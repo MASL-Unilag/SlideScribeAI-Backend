@@ -1,7 +1,7 @@
 import { HttpStatus } from "../utils";
-import { ApiError, ErrorDetailsDescriptor } from "./apiError";
+import { ApplicationError, ErrorDetailsDescriptor } from "./apiError";
 
-export class BadRequestError extends ApiError {
+export class BadRequestError extends ApplicationError {
   _statusCode = HttpStatus.BAD_REQUEST;
   _message: string;
   _details = null;

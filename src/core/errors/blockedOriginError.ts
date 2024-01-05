@@ -1,7 +1,7 @@
 import { HttpStatus } from "../utils";
-import { ApiError, ErrorDetailsDescriptor } from "./apiError";
+import { ApplicationError, ErrorDetailsDescriptor } from "./apiError";
 
-export class NotWhiteListedOriginError extends ApiError {
+export class NotWhiteListedOriginError extends ApplicationError {
   _statusCode = HttpStatus.NOT_WHITELISTED;
   _message: string;
   _details = null;

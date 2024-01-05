@@ -1,14 +1,22 @@
 import { Router } from "express";
 import * as multer from "multer";
 import { controlHandler } from "../../core";
+import { FileManager } from "../components";
+import { slideGenerator } from "../slide-generation-module";
+import { generateSlideSchmea } from "./schema";
 
 export const slidesRouter = Router();
 
-const slidesRateLimiter: any = ""; //TODO:
+const fileUploadOptions: multer.Options = {
+  storage: multer.memoryStorage(),
+  ...FileManager.fileUploadConfigurations(),
+};
 
-const uploadManager = multer({ storage: multer.memoryStorage() });
+const uploadManager = multer(fileUploadOptions);
 
 slidesRouter
-  .use(slidesRateLimiter)
   .use(uploadManager.single("file"))
-  .post("generate", controlHandler.handle("" as any));
+  .post(
+    "/generate",
+    controlHandler.handle(slideGenerator.generate, generateSlideSchmea),
+  );

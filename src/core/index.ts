@@ -6,5 +6,4 @@ export * from "./logging";
 export * from "./middlewares";
 export { default as mail } from "./mail";
 export * from "./notifications";
-export * from "./filessystem";
 export * from "./mail";

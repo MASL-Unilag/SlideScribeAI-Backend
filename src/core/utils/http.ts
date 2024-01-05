@@ -1,7 +1,7 @@
 import fetch from "axios";
 import { UnProcessableError } from "../errors";
 import { logger } from "../logging";
-import HttpStatus from "./statusCodes";
+import { HttpStatus } from "./statusCodes";
 
 export class HttpHelper {
   private headers: Record<string, any> = {};

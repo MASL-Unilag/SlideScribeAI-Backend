@@ -6,3 +6,5 @@ export * from "./notFoundError";
 export * from "./unAuthorizedError";
 export * from "./unProcessableError";
 export * from "./blockedOriginError";
+export * from "./inValidFileExtensionError";
+export * from "./fileExtractionError";

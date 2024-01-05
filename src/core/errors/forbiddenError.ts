@@ -1,7 +1,7 @@
 import { HttpStatus } from "../utils";
-import { ApiError, ErrorDetailsDescriptor } from "./apiError";
+import { ApplicationError, ErrorDetailsDescriptor } from "./apiError";
 
-export class ForbiddenError extends ApiError {
+export class ForbiddenError extends ApplicationError {
   _statusCode = HttpStatus.FORBIDDEN;
   _message: string;
   _details = null;

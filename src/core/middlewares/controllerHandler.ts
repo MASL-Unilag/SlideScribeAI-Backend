@@ -37,8 +37,19 @@ export class ControlHandler {
           return;
         }
 
-        const { code, ...data } = controllerResult;
-        res.status(code ?? HttpStatus.OK).send(data);
+        const { code, headers, isOctectStream, ...data } = controllerResult;
+
+        if (isOctectStream) {
+          res
+            .set({ ...headers })
+            .status(code ?? HttpStatus.OK)
+            .pipe(data.body);
+        }
+
+        res
+          .set({ ...headers })
+          .status(code ?? HttpStatus.OK)
+          .send(data);
       } catch (error) {
         logger.error(error);
         next(error);

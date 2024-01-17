@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as multer from "multer";
+import multer from "multer";
 import { controlHandler } from "../../core";
 import { FileManager } from "../components";
 import { slideFinder, slideGenerator } from "../slide-generation-module";

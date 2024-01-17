@@ -1,6 +1,6 @@
 
 import { FileExtractorEngine } from "./engine";
-import * as extractor from "pdf-parse";
+import extractor from "pdf-parse";
 
 export class PDFExtractorEngine implements FileExtractorEngine {
   public readonly extension: string = "application/pdf";

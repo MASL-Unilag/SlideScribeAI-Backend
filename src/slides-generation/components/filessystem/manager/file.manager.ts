@@ -13,7 +13,7 @@ import { PowerPointManager } from "../powerpointgen";
 
 import * as path from "node:path";
 import * as mime from "mime-types";
-import * as pptxgen from "pptxgenjs";
+import pptxgen from "pptxgenjs";
 import { ChatRequestMessage, ImageGenerationData } from "@azure/openai";
 import { FileUploadManager } from "../uploader";
 import { containerClient } from "../../azure";
@@ -34,7 +34,7 @@ export class FileManager {
     private readonly file: RequestFileContents,
     private readonly slideRepo: SlideRepository,
   ) {
-    const pptxGen = new pptxgen.default();
+    const pptxGen = new pptxgen();
     this._powerPointEngine = new PowerPointManager(
       pptxGen,
       file.originalFileName! ?? "me",

@@ -1,11 +1,11 @@
-import PptxGenJS from "pptxgenjs";
+import pptxgen from "pptxgenjs";
 import { StringHelper } from "../../../../core";
 
-export interface PowerPointSlideStyles extends PptxGenJS.TextPropsOptions {}
+export interface PowerPointSlideStyles extends pptxgen.TextPropsOptions {}
 
 export type Slide = {
   title: string;
-  content: PptxGenJS.Slide;
+  content: pptxgen.Slide;
 };
 
 export interface Presentation {
@@ -46,7 +46,7 @@ export class PowerPointManager {
   private pageCount: number = 0;
 
   constructor(
-    private readonly powerPointCreator: PptxGenJS,
+    private readonly powerPointCreator: pptxgen,
     name: string,
   ) {
     this.powerPointCreator.defineSlideMaster({

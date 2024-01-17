@@ -6,24 +6,40 @@ import {
 } from "../../../../core";
 import { ExtensionExtractorsRegistry } from "../engines";
 import { FileExtractorEngine } from "../engines/engine";
-import * as path from "node:path";
-import * as mime from "mime-types";
-import { openai } from "../../openai";
-import { ChatRequestMessage, ImageGenerationData } from "@azure/openai";
+import { openai } from "../../azure";
 import { FileUploadPayload } from "../../../types";
 import { ImageGeneratorEngine } from "../images";
+import { PowerPointManager } from "../powerpointgen";
 
-export type SlideGenerationInputType = {
+import * as path from "node:path";
+import * as mime from "mime-types";
+import * as pptxgen from "pptxgenjs";
+import { ChatRequestMessage, ImageGenerationData } from "@azure/openai";
+import { FileUploadManager } from "../uploader";
+import { containerClient } from "../../azure";
+import { SlideGenerationStatus, SlideRepository } from "../../../models";
+
+export type SlideGenerationInput = {
   options: FileUploadPayload["input"];
+  slideId: string;
 };
 
 export class FileManager {
   private _extractorEngine: FileExtractorEngine;
+  private _imageEngine: ImageGeneratorEngine;
+  private _powerPointEngine: PowerPointManager;
   private _documentContents: string;
-  private _imageEgine: ImageGeneratorEngine;
 
-  constructor(private readonly file: RequestFileContents) {
-    this._imageEgine = new ImageGeneratorEngine(openai);
+  constructor(
+    private readonly file: RequestFileContents,
+    private readonly slideRepo: SlideRepository,
+  ) {
+    const pptxGen = new pptxgen.default();
+    this._powerPointEngine = new PowerPointManager(
+      pptxGen,
+      file.originalFileName! ?? "me",
+    );
+    this._imageEngine = new ImageGeneratorEngine(openai);
   }
 
   private async _getFileContents(file: RequestFileContents) {
@@ -34,17 +50,12 @@ export class FileManager {
     )) as unknown as string;
   }
 
-  enhanceFileContents(): FileManager {
-    // return this._documentContents;
-    return this;
-  }
-
-  async generateSlideContents({ options }: SlideGenerationInputType) {
+  async generateSlideContents({ options, slideId }: SlideGenerationInput) {
     if (!this.documentContentsIsDefined()) {
       this._documentContents = await this._getFileContents(this.file);
     }
 
-    const prompt = ` Generate a comprehensive set of contents  and its summary with the following options:
+    const prompt = ` Generate a comprehensive set of slide notes with the following options:
         - Topic: ${options.topic}
         - Context: ${options.context}
         - Output Style: ${options.outputStyle}
@@ -80,12 +91,50 @@ export class FileManager {
 
       const content = response.choices[0].message?.content!;
 
-      if (!options.includeImages) return { content };
-
-      const generatedImagesUrl = (await this._imageEgine.generate(
+      const generatedImagesUrl = (await this._imageEngine.generate(
         `${options.context} ${options.topic}`,
       )) as ImageGenerationData["url"][];
-      return { content, generatedImagesUrl };
+
+      this._powerPointEngine.addSlide(
+        { title: options.topic, content, imageUrl: generatedImagesUrl[0]! },
+        {
+          styles: {
+            italic: false,
+            breakLine: true,
+            softBreakBefore: true,
+            tabStops: [{ position: 1 }, { position: 3 }],
+          },
+        },
+      );
+
+      const presentationBufferFile = await this._powerPointEngine.toStream();
+      const uploader = new FileUploadManager(containerClient);
+
+      const presentationUrl = await uploader.upload(
+        presentationBufferFile.stream as ArrayBuffer,
+        options.topic,
+      );
+
+      const slide = await this.slideRepo.findOneAndUpdate(
+        {
+          _id: slideId,
+        },
+        {
+          $set: {
+            status: SlideGenerationStatus.COMPLETED,
+            file: presentationUrl,
+            originalContentFromUploadedDoc: this._documentContents,
+          },
+        },
+        {
+          new: true,
+        },
+      );
+
+      console.log(slide);
+      console.log(presentationUrl);
+
+      return presentationUrl;
     } catch (error: any) {
       console.log({ error });
       throw new FileExtractionError("Error generating slide.");

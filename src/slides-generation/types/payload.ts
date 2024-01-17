@@ -21,6 +21,13 @@ export interface FileUploadPayload extends ContextTypes {
     includeImages: boolean // defaults to false.
     outputStyle: SlideOutputStyle,
     limitedTo: number //defaults.10 pages.
-    outputLanguage: OutputLanguage 
+    outputLanguage: OutputLanguage,
+    outputDocumentName: string;
+  }
+}
+
+export interface RetrieveSlidePayload extends ContextTypes {
+  params: {
+    id: string;
   }
 }

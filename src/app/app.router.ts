@@ -1,7 +1,7 @@
 import { Request, Router, Response } from "express";
 
 import { HttpStatus } from "../core";
-import { authRouter } from "../auth";
+import { authRouter, currentUser } from "../auth";
 import { slidesRouter } from "../slides-generation/routes";
 import { contentRouter } from "../content/routes";
 
@@ -16,5 +16,6 @@ appRouter.get("/health", (_: Request, res: Response) => {
 
 appRouter
   .use("/auth", authRouter)
+  .use(currentUser.handle)
   .use("/slides", slidesRouter)
   .use("/content", contentRouter);

@@ -19,7 +19,6 @@ export class ImageGeneratorEngine implements AIGenerators {
   ): Promise<ImageGenerationData["url"][]> => {
     const prompt = this.PROMPT.replace("[CONTEXT]", slideContents);
 
-    console.log(prompt);
 
     const result = await this.client.getImages(this.DEPLOYMENT_NAME, prompt, {
       n: this.MAX_NUMBER_OF_IMAGES_TO_GENERATE,

@@ -1,38 +1,19 @@
 export class StringHelper {
-  /**
-   * @description Replaces every place holder [[placeholder]] with the actual value
-   * @param {string} template, This is the actual HTML template from the outside world.
-   * @param {any{}} values, This is the shape of the user's information.
-   * @returns {string} The user's specific HTML template stripped  off of any [[value]]
-   */
-  static generatePersonalizedHtmlFromTemplateAndValues(
-    template: string,
-    values: any,
-  ) {
-    return template.replace(/\[\[(\w+)]]/g, (match, placeHolder) => {
-      return values[placeHolder] || match;
-    });
+  static generateHexColorCode() {
+    const hexColorAlphabets = "ABCDEF";
+    const hexColorNumbers = "0123456789";
+
+    return `${StringHelper._randomlyPick(
+      hexColorAlphabets,
+    )}${StringHelper._randomlyPick(
+      hexColorNumbers,
+    )}${StringHelper._randomlyPick(hexColorAlphabets)}`;
   }
 
-  /**
-   * @description Transforms an array into an object containing given fields and values
-   * @example columns [name, description], info [David, "king"] becomes { name: "David", description: "King" }
-   * @param {Record<any, number>}info
-   * @param {string[] }columns
-   * @returns {Record<unknown, unknown>} object
-   */
-  static generateObjectFromColumnsAndInfo({
-    info,
-    columns,
-  }: {
-    info: Record<any, number>;
-    columns: string[];
-  }) {
-    let object: any = {};
-    columns.forEach((column: any, index: number) => {
-      object[column] = info[index];
-    });
+  private static _randomlyPick = (value: string) => {
+    const firstIndex = Math.round(Math.random());
+    const secondIndex = Math.round(Math.random());
 
-    return object;
-  }
+    return `${value.at(firstIndex)}${value.at(secondIndex)}`;
+  };
 }

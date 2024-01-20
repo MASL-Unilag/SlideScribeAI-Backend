@@ -5,7 +5,7 @@ export class FileUploadManager {
 
   upload = async (bufferContents: ArrayBuffer, fileName: string) => {
     const blockBlobClient = this.uploadClient.getBlockBlobClient(
-      `${fileName}.pptx`,
+      fileName
     );
     await blockBlobClient.uploadData(bufferContents);
     return blockBlobClient.url;

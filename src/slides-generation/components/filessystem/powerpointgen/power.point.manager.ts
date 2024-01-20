@@ -21,9 +21,9 @@ export interface StreamOptions {
 }
 
 export interface SlideProperties {
-  title: string;
+  title?: string;
   content: string;
-  imageUrl: string;
+  imageUrl?: string;
   sectionTitle?: string;
 }
 
@@ -49,19 +49,19 @@ export class PowerPointManager {
     private readonly powerPointCreator: pptxgen,
     name: string,
   ) {
-    this.powerPointCreator.defineSlideMaster({
-      title: name,
-      margin: [0.5, 0.25, 1.0, 0.25],
-      background: {
-        color: StringHelper.generateHexColorCode(),
-        transparency: Math.ceil(Math.random() * 100),
-      },
-      slideNumber: {
-        x: 1.0,
-        y: 1.0,
-        color: StringHelper.generateHexColorCode(),
-      },
-    });
+    // this.powerPointCreator.defineSlideMaster({
+    //   title: name,
+    //   margin: [0.5, 0.25, 1.0, 0.25],
+    //   background: {
+    //     color: StringHelper.generateHexColorCode(),
+    //     transparency: Math.ceil(Math.random() * 100),
+    //   },
+    //   slideNumber: {
+    //     x: 1.0,
+    //     y: 1.0,
+    //     color: StringHelper.generateHexColorCode(),
+    //   },
+    // });
   }
 
   /**
@@ -76,18 +76,15 @@ export class PowerPointManager {
 
   addSlide = async (
     props: SlideProperties,
-    { slideNumber, styles }: SlideOptions,
+    { styles }: SlideOptions,
   ) => {
-    const slide = await this.powerPointCreator.addSlide({
-      masterName: props.title,
-      sectionTitle: props.sectionTitle,
-    });
+    const slide = await this.powerPointCreator.addSlide();
 
     slide.addText(props.content, { ...styles });
-    slide.addImage({ path: props.imageUrl, placeholder: "images/slide" });
+    // slide.addImage({ data: props.imageUrl, placeholder: "images/slide" });
 
     this.presentation.slides[++this.pageCount] = {
-      title: props.title,
+      title: props.title || "Unspecified",
       content: slide,
     };
     return this;

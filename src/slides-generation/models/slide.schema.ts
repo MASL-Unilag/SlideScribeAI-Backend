@@ -9,6 +9,7 @@ export interface Slide {
   name: string;
   context: string;
   file: string;
+  pdfFile: string;
   originalContentFromUploadedDoc: string;
   owner: string;
   topic: string;
@@ -30,12 +31,16 @@ export const slideSchema = new Schema<Slide>(
     },
     originalContentFromUploadedDoc: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     topic: {
       type: String,
       required: true,
+    },
+    pdfFile: {
+      type: String,
+      required: false,
     },
     file: {
       type: String,

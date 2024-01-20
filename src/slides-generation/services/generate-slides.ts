@@ -29,16 +29,13 @@ export class GenerateSlides {
         limitedTo: input.limitedTo,
         outputLanguage: input.outputLanguage,
         owner: user?.id,
-        originalContentFromUploadedDoc: file.bufferContents?.toString("utf8"),
         name: input.outputDocumentName ?? input.topic,
       });
 
-      Promise.resolve(
-        fileManager.generateSlideContents({
-          options: input,
-          slideId: slide.id,
-        }),
-      );
+      fileManager.generateSlideContents({
+        options: input,
+        slideId: slide.id,
+      });
 
       return {
         code: HttpStatus.OK,

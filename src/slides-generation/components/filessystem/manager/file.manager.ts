@@ -51,8 +51,8 @@ export class FileManager {
     )) as unknown as string;
   }
 
-  private splitTextIntoSlides = async (text: string) => {
-    const slides: { title: string; content: string; }[] = [];
+  private splitTextIntoPages = async (text: string) => {
+    const slides: { title: string; content: string }[] = [];
     const sections = text.split("Slide ");
 
     for (const section of sections) {
@@ -64,7 +64,6 @@ export class FileManager {
           .map((line) => line.trim())
           .join("\n");
 
-        // console.log({ base64ImageOfContent });
         slides.push({
           title,
           content,
@@ -75,11 +74,7 @@ export class FileManager {
     return slides;
   };
 
-  async generateSlideContents({ options, slideId }: SlideGenerationInput) {
-    if (!this.documentContentsIsDefined()) {
-      this._documentContents = await this._getFileContents(this.file);
-    }
-
+  private _preparePromptMessages = (options: any) => {
     const prompt = ` Generate a comprehensive set of slide notes with the following options:
         - Topic: ${options.topic}
         - Context: ${options.context}
@@ -92,7 +87,7 @@ export class FileManager {
       Ensure the generated content is clear, concise, and visually appealing.
     `;
 
-    const messages: ChatRequestMessage[] = [
+    return [
       {
         role: "system",
         content: "You're a helpful content generator.",
@@ -102,135 +97,95 @@ export class FileManager {
         content: prompt,
       },
     ];
+  };
+
+  private _getCompletions = async (messages: ChatRequestMessage[]) => {
+    const response = await openai.getChatCompletions(
+      config.openai.textDeploymentName,
+      messages,
+      {
+        responseFormat: {
+          type: "text",
+        },
+      },
+    );
+
+    return response.choices[0].message?.content!;
+  };
+
+  async generateSlideContents({ options, slideId }: SlideGenerationInput) {
+    if (!this.documentContentsIsDefined()) {
+      this._documentContents = await this._getFileContents(this.file);
+    }
+
+    const messages: ChatRequestMessage[] = this._preparePromptMessages(
+      options,
+    ) as any;
 
     try {
-      const response = await openai.getChatCompletions(
-        config.openai.textDeploymentName,
-        messages,
-        {
-          responseFormat: {
-            type: "text",
-          },
-        },
-      );
 
-      const content = response.choices[0].message?.content!;
-      const slides = await this.splitTextIntoSlides(content);
-
-      // const slidePages = content.split(/Slide \d+: /).filter(Boolean);
-      // console.log(slidePages.length);
-
-     
+      const content = await this._getCompletions(messages);
+      const slides = await this.splitTextIntoPages(content);
       const pptxBuffer = await this.handlePPTXGeneration(slides);
-      // const slideContent: any = {
-      //   title: options.topic,
-      //   content,
-      // };
 
       const uploader = new FileUploadManager(containerClient);
-
-      let pdfBuffer;
-      let pdfUrl: any;
-      if(options.outputLanguage === OutputLanguage.ENG){
-        pdfBuffer = await this.handlePDFGeneration(slides);
-        pdfUrl = await uploader.upload(
-          pdfBuffer as ArrayBuffer,
-          `${options.topic}.pdf`,
-        );
-      }
-      
-
       const presentationUrl = await uploader.upload(
         pptxBuffer.stream as ArrayBuffer,
         `${options.topic}.pptx`,
       );
 
-      const slide = await this.slideRepo.findOneAndUpdate(
-        {
-          _id: slideId,
-        },
-        {
-          $set: {
-            status: SlideGenerationStatus.COMPLETED,
-            file: presentationUrl,
-            pdfFile: pdfUrl,
-            originalContentFromUploadedDoc: this._documentContents,
-          },
-        },
-        {
-          new: true,
-        },
-      );
+      await this._updateSlideDetails(slideId, presentationUrl);
     } catch (error: any) {
       console.log({ error });
       throw new FileExtractionError("Error generating slide.");
     }
   }
 
-  private handlePPTXGeneration = async (
-    contents: { title: string; content: string;}[],
+  private _updateSlideDetails = async (
+    slideId: string,
+    presentationUrl: string,
   ) => {
-    contents.map(
-      async (content: { title: string; content: string;}) => {
-        this._powerPointEngine.addSlide(
-          { content: content.content },
-          {
-            styles: {
-              x: 1, // x-coordinate
-              y: 1, // y-coordinate
-              fontFace: "Arial", // Font face
-              fontSize: 18, // Font size
-              color: "000000", // Text color (hex format)
-              bold: false, // Bold text
-              italic: false, // Italic text
-              underline: {
-                style: "none",
-              }, // Underline text
-              align: "left", // Text alignment (left, right, center)
-            },
-          },
-        );
+    await this.slideRepo.findOneAndUpdate(
+      {
+        _id: slideId,
+      },
+      {
+        $set: {
+          status: SlideGenerationStatus.COMPLETED,
+          file: presentationUrl,
+          originalContentFromUploadedDoc: this._documentContents,
+        },
+      },
+      {
+        new: true,
       },
     );
-    return await this._powerPointEngine.toStream();
   };
-  private handlePDFGeneration = async (
-    contents: { title: string; content: string;}[],
+
+  private handlePPTXGeneration = async (
+    contents: { title: string; content: string }[],
   ) => {
-    let bytes = contents.map(
-      async (content: { title: string; content: string;}) => {
-        const pdfDoc = await PDFDocument.create();
-
-        // Add a new page to the PDF
-        const page = pdfDoc.addPage();
-        const font = await pdfDoc.embedStandardFont(StandardFonts.Helvetica);
-
-        // Draw text on the page
-        // const { height } = page.getSize();
-        const titleFontSize = 16;
-
-        page.drawText(content.title, {
-          font,
-          size: titleFontSize,
-          color: rgb(0, 0.53, 0.71),
-        });
-
-        // Draw additional text on the page
-        const fontSize = 12;
-        page.drawText(content.content, {
-          font,
-          size: fontSize,
-          color: rgb(0, 0.53, 0.71),
-        });
-
-        // Save the PDF as a buffer
-        return await pdfDoc.save();
-      },
-    );
-
-    const resolvedBytes = await Promise.all(bytes);
-    const concatenatedBytes = Buffer.concat(resolvedBytes);
-    return concatenatedBytes;
+    contents.map(async (content: { title: string; content: string }) => {
+      this._powerPointEngine.addSlide(
+        { content: content.content },
+        {
+          styles: {
+            x: 1, // x-coordinate
+            y: 1, // y-coordinate
+            fontFace: "Arial", // Font face
+            fontSize: 18, // Font size
+            color: "000000", // Text color (hex format)
+            bold: false, // Bold text
+            italic: false, // Italic text
+            underline: {
+              style: "none",
+            }, // Underline text
+            align: "left", // Text alignment (left, right, center)
+          },
+        },
+      );
+    });
+    return await this._powerPointEngine.toStream();
   };
 
   private documentContentsIsDefined(): boolean {

@@ -38,10 +38,6 @@ export const slideSchema = new Schema<Slide>(
       type: String,
       required: true,
     },
-    pdfFile: {
-      type: String,
-      required: false,
-    },
     file: {
       type: String,
       required: false,

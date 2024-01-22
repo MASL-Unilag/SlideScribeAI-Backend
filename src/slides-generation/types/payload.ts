@@ -31,3 +31,9 @@ export interface RetrieveSlidePayload extends ContextTypes {
     id: string;
   }
 }
+
+export interface RetrieveAllSlidePayload extends ContextTypes {
+  params: {
+    userid: string;
+  }
+}

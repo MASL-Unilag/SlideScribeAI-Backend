@@ -28,3 +28,9 @@ export const retrieveSlideSchema: ValidationSchema = {
     id: Joi.string().required(),
   }),
 };
+
+export const generateAllSlideSchema: ValidationSchema = {
+  inputSchema: Joi.object({
+    userId: Joi.string().required()
+  }),
+};

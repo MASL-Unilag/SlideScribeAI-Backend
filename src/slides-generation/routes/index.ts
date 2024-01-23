@@ -4,6 +4,8 @@ import { controlHandler } from "../../core";
 import { FileManager } from "../components";
 import { slideFinder, slideGenerator } from "../slide-generation-module";
 import { generateSlideSchema, retrieveSlideSchema } from "./schema";
+import { generateAllSlideSchema } from "./schema";
+import { slideRetriever } from "../slide-generation-module";
 
 export const slidesRouter = Router();
 
@@ -20,4 +22,8 @@ slidesRouter
   .post(
     "/generate",
     controlHandler.handle(slideGenerator.generate, generateSlideSchema),
+  );
+  slidesRouter.get(
+    "/getallslides/:userid",
+    controlHandler.handle(slideRetriever.retrieveSlidesForUser, generateAllSlideSchema),
   );

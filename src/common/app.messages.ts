@@ -7,6 +7,7 @@ export const AppMessages = {
       "You need to a firstname, lastname and password to create account",
     IMAGE_TYPE_ERROR: "No images were generated.",
     IMAGE_GEN_ERROR: "n error occurred while generating the image.",
+
   },
   SUCCESS: {
     LOGIN: "Login successful.",
@@ -15,6 +16,7 @@ export const AppMessages = {
     IMAGE_GENERATED: "Image generation successful",
     SLIDE_IN_PROGRESS: "You're slide is been processed.",
     SLIDE_OUTPUT: "Here is your slide.",
+    SLIDES_GENERATED: "Your slides have been retrieved successfully"
   },
   INFO: {
     INVALID_OPERATION: "Invalid operation.",

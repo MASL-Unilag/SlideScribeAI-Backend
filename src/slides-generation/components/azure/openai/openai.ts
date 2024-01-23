@@ -1,4 +1,4 @@
-import { config } from "../../../core";
+import { config } from "../../../../core";
 import { AzureKeyCredential, OpenAIClient } from "@azure/openai";
 
 const azureCredentialkey = new AzureKeyCredential(config.openai.key);

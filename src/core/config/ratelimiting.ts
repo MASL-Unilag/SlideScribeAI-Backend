@@ -1,5 +1,5 @@
 import rateLimit from "express-rate-limit";
-import * as moment from "moment";
+import moment from "moment";
 
 export const globalRateLimiter = rateLimit({
   windowMs: moment().add(12, "hours").unix(), // 24 hrs in milliseconds

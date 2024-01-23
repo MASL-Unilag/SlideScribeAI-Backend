@@ -1,9 +1,9 @@
 import { Router } from "express";
-import * as multer from "multer";
+import multer from "multer";
 import { controlHandler } from "../../core";
 import { FileManager } from "../components";
-import { slideGenerator } from "../slide-generation-module";
-import { generateSlideSchmea } from "./schema";
+import { slideFinder, slideGenerator } from "../slide-generation-module";
+import { generateSlideSchema, retrieveSlideSchema } from "./schema";
 
 export const slidesRouter = Router();
 
@@ -16,7 +16,8 @@ const uploadManager = multer(fileUploadOptions);
 
 slidesRouter
   .use(uploadManager.single("file"))
+  .get("/:id", controlHandler.handle(slideFinder.handle, retrieveSlideSchema))
   .post(
     "/generate",
-    controlHandler.handle(slideGenerator.generate, generateSlideSchmea),
+    controlHandler.handle(slideGenerator.generate, generateSlideSchema),
   );

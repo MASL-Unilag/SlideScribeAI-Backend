@@ -1,9 +1,9 @@
-import * as express from "express";
-import * as cors from "cors";
+import express from "express";
+import cors from "cors";
 import helmet from "helmet";
-import * as morgan from "morgan";
+import morgan from "morgan";
 import * as parser from "body-parser";
-import * as compression from "compression";
+import compression from "compression";
 
 import {
   notFoundHandler,

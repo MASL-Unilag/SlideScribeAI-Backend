@@ -6,7 +6,7 @@ import { HttpStatus } from "./statusCodes";
 export class HttpHelper {
   private headers: Record<string, any> = {};
 
-  get = async <T extends string | any = any>(url: string) => {
+  get = async <T extends string | any = any>(url: string, respType: "json" | "arraybuffer") => {
     return this.makeRequest<T>(url, "GET");
   };
 
@@ -22,10 +22,12 @@ export class HttpHelper {
   private makeRequest = async <T extends string | any = any>(
     url: string,
     method: "POST" | "GET",
+    responseType: "json" | "arraybuffer" = "json"
   ) => {
     try {
       const response = await fetch<T>(url, {
         method,
+        responseType,
         headers: {
           ...this.headers,
         },

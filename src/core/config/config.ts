@@ -50,12 +50,16 @@ export const config = Object.freeze({
     },
   },
   services: {
-      openaikey: {
-        OPENAI_API_KEY: process.env.OPENAI_API_KEY as string
-      }
+    openaikey: {
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY as string,
+    },
   },
   rateLimit: {
     limit: process.env.WINDOW_RATE_LIMIT,
+  },
+  fileStorage: {
+    connectionString: process.env.CONNECTION_STRING as string,
+    containerName: process.env.CONTAINER_NAME as string,
   },
   openai: {
     key: process.env.OPENAI_KEY as string,

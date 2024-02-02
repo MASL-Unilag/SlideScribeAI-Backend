@@ -8,3 +8,4 @@ export * from "./unProcessableError";
 export * from "./blockedOriginError";
 export * from "./inValidFileExtensionError";
 export * from "./fileExtractionError";
+export * from "./slideGenerationError";

@@ -18,23 +18,14 @@ export class GenerateSlides {
     user,
   }: Context<FileUploadPayload>): Promise<HandlerReturnType> => {
     try {
-      const fileManager = new FileManager(file, this.slideRepository);
+      const fileManager = new FileManager(file);
 
-      const slide = await this.slideRepository.create({
-        topic: input.topic,
-        noOfPages: input.noOfPages,
-        context: input.context,
-        includeImages: input.includeImages,
-        outputStyle: input.outputStyle,
-        limitedTo: input.limitedTo,
-        outputLanguage: input.outputLanguage,
-        owner: user?.id,
-        name: input.outputDocumentName ?? input.topic,
-      });
+      const slide = await this._createSlide({ input, user });
 
-      fileManager.generateSlideContents({
+      fileManager.generateSlide({
         options: input,
         slideId: slide.id,
+        docCategory: input.incomingDocumentCategory,
       });
 
       return {
@@ -50,4 +41,18 @@ export class GenerateSlides {
       throw new UnProcessableError(err.message);
     }
   };
+
+  private async _createSlide({ input, user }: any) {
+    return await this.slideRepository.create({
+      topic: input.topic,
+      noOfPages: input.noOfPages,
+      context: input.context,
+      includeImages: input.includeImages,
+      outputStyle: input.outputStyle,
+      limitedTo: input.limitedTo,
+      outputLanguage: input.outputLanguage,
+      owner: user?.id,
+      name: input.outputDocumentName ?? input.topic,
+    });
+  }
 }

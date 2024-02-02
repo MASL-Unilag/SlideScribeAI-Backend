@@ -9,7 +9,7 @@ export class ImageGeneratorEngine implements AIGenerators {
 
     [CONTEXT]
   `;
-  public readonly DEPLOYMENT_NAME: string = config.openai.imageDeploymentName;
+  public readonly DEPLOYMENT_NAME: string = config.azure.openai.imageDeploymentName;
   public readonly SIZE: ImageSize = "1024x1024";
   public readonly MAX_NUMBER_OF_IMAGES_TO_GENERATE: number = 1;
 

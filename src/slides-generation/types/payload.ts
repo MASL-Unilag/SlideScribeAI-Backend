@@ -1,16 +1,7 @@
 import { ContextTypes, RequestFileContents } from "../../core";
+import { DocumentCategory, OutputLanguage, SlideOutputStyle } from "./types";
 
-export enum SlideOutputStyle {
-  BULLET_POINT = "bullet-points",
-  SHORT_PARAGRAPHS = "short-paragraphs"
-}
 
-export enum OutputLanguage {
-  ENG = "english",
-  YOR = "yoruba",
-  IGB = "igbo",
-  HAU = "hausa",
-}
 
 export interface FileUploadPayload extends ContextTypes {
   file: RequestFileContents;
@@ -18,12 +9,13 @@ export interface FileUploadPayload extends ContextTypes {
     topic: string;
     noOfPages: number;
     context: string; // math, english, engineering.
-    includeImages: boolean // defaults to false.
-    outputStyle: SlideOutputStyle,
-    limitedTo: number //defaults.10 pages.
-    outputLanguage: OutputLanguage,
+    includeImages: boolean; // defaults to false.
+    outputStyle: SlideOutputStyle;
+    limitedTo: number; //defaults.10 pages.
+    outputLanguage: OutputLanguage;
     outputDocumentName: string;
-  }
+    incomingDocumentCategory: typeof DocumentCategory; // ocr,plain or audio
+  };
 }
 
 export interface RetrieveSlidePayload extends ContextTypes {
@@ -33,7 +25,8 @@ export interface RetrieveSlidePayload extends ContextTypes {
 }
 
 export interface RetrieveAllSlidePayload extends ContextTypes {
-  params: {
-    userid: string;
-  }
+  user: {
+    id: string;
+    email: string;
+  };
 }

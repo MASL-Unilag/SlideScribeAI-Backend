@@ -57,15 +57,23 @@ export const config = Object.freeze({
   rateLimit: {
     limit: process.env.WINDOW_RATE_LIMIT,
   },
-  fileStorage: {
-    connectionString: process.env.CONNECTION_STRING as string,
-    containerName: process.env.CONTAINER_NAME as string,
-  },
-  openai: {
-    key: process.env.OPENAI_KEY as string,
-    baseUrl: process.env.OPENAI_BASE_URL as string,
-    textDeploymentName: process.env.OPENAI_TEXT_DEPLOYMENT_NAME as string,
-    imageDeploymentName: process.env.OPENAI_IMAGE_DEPLOYMENT_NAME as string,
+  azure: {
+    fileStorage: {
+      connectionString: process.env.CONNECTION_STRING as string,
+      containerName: process.env.CONTAINER_NAME as string,
+    },
+    openai: {
+      key: process.env.OPENAI_KEY as string,
+      baseUrl: process.env.OPENAI_BASE_URL as string,
+      textDeploymentName: process.env.OPENAI_TEXT_DEPLOYMENT_NAME as string,
+      imageDeploymentName: process.env.OPENAI_IMAGE_DEPLOYMENT_NAME as string,
+    },
+    ocr: {
+      endpoint: process.env.AZURE_OCR_ENDPOINT as string,
+      region: process.env.AZURE_OCR_REGION as string,
+      key: process.env.AZURE_OCR_KEY as string,
+      model: process.env.AZURE_OCR_MODEL as string,
+    },
   },
 });
 

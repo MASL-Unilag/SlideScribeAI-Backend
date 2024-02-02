@@ -22,6 +22,7 @@ export class CurrentUser {
 
       const decryptedToken = this.encryptor.decrypt(token);
 
+      console.log(config.auth.accessTokenSecret);
       tokenDetails = this.tokenService.verifyToken(
         decryptedToken,
         config.auth.accessTokenSecret,

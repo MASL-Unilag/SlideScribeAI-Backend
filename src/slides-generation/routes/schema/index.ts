@@ -1,6 +1,10 @@
 import * as Joi from "joi";
 import { ValidationSchema } from "../../../core";
-import { OutputLanguage, SlideOutputStyle } from "../../types";
+import {
+  DocumentCategory,
+  OutputLanguage,
+  SlideOutputStyle,
+} from "../../types";
 
 export const generateSlideSchema: ValidationSchema = {
   inputSchema: Joi.object({
@@ -15,6 +19,13 @@ export const generateSlideSchema: ValidationSchema = {
       OutputLanguage.YOR,
     ).default(OutputLanguage.ENG),
     outputDocumentName: Joi.string(),
+    incomingDocumentCategory: Joi.string()
+      .valid(
+        DocumentCategory.AUDIO,
+        DocumentCategory.PLAIN,
+        DocumentCategory.OCR,
+      )
+      .required(),
     outputStyle: Joi.valid(
       SlideOutputStyle.BULLET_POINT,
       SlideOutputStyle.SHORT_PARAGRAPHS,
@@ -29,8 +40,8 @@ export const retrieveSlideSchema: ValidationSchema = {
   }),
 };
 
-export const generateAllSlideSchema: ValidationSchema = {
+export const retrieveUserSlideSchema: ValidationSchema = {
   inputSchema: Joi.object({
-    userId: Joi.string().required()
+    userId: Joi.string().required(),
   }),
 };

@@ -49,7 +49,7 @@ export class TokenService {
    */
   verifyToken(token: string, secret: string): jwt.JwtPayload {
     try {
-      return jwt.decode(token) as jwt.JwtPayload;
+      return jwt.verify(token, secret) as jwt.JwtPayload;
     } catch (err) {
       logger.error(err);
       throw new UnAuthorizedError(AppMessages.FAILURE.INVALID_TOKEN_PROVIDED);
